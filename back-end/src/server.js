@@ -4,7 +4,7 @@ import fs from 'fs';
 import admin from 'firebase-admin';
 
 const credentials = JSON.parse(
-    fs.readFileSync('../credentials.json')
+    fs.readFileSync('./credentials.json')
 )
 admin.initializeApp({
     credential: admin.credential.cert(credentials),
@@ -19,9 +19,12 @@ app.use(async (req, use, next) => {
         try{
             req.user = await admin.auth().verifyIdToken(authtoken);
         } catch (e){
-            res.sendStatus(400);
+            return res.sendStatus(400);
         } 
     }
+
+    req.user = req.user || {};
+
     next();
 });
 
@@ -32,7 +35,7 @@ app.get('/api/articles/:name', async(req, res) =>{
     const article = await db.collection('articles').findOne( { name });
     if(article){
         const upvoteIds = article.upvoteIds || [];
-        article.canUpvote = uid && !upvoteIds.include(uid);
+        article.canUpvote = uid && !upvoteIds.includes(uid);
         res.json(article);
     } else {
         res.sendStatus(404);
@@ -54,7 +57,7 @@ app.put('/api/articles/:name/upvote', async (req, res) =>{
     const article = await db.collection('articles').findOne( { name });
     if(article){
         const upvoteIds = article.upvoteIds || [];
-        const canUpvote = uid && !upvoteIds.include(uid);
+        const canUpvote = uid && !upvoteIds.includes(uid);
     
         if(canUpvote){
             await db.collection('articles').updateOne( { name }, {
