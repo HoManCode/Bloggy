@@ -20,8 +20,8 @@ const LoginPage = () => {
 
     return(
         <>
-            <h1>Log In</h1>
             {error && <p className="error">{error}</p>}
+            <div class="login-form-container">
             <input 
                 placeholder="Your email address"
                 value={email}
@@ -33,6 +33,7 @@ const LoginPage = () => {
                 type="password" />
             <button onClick={logIn}>Log In</button>
             <Link to="/create-account">Don't have an account? Create one here</Link>
+            </div>
         </>
     )
 }

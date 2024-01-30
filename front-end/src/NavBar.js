@@ -17,8 +17,7 @@ const NavBar = () => {
                 <li>
                     <Link to="/articles">Articles</Link>
                 </li>
-            </ul>
-            <div className='nav-right'>
+                <li>
                 { user 
                     ? <button onClick={() =>{
                         signOut(getAuth());
@@ -27,7 +26,8 @@ const NavBar = () => {
                         navigate('/login');
                     }}>Log In</button>
                 }
-            </div>
+            </li>
+            </ul>
         </nav>
     )
 }
