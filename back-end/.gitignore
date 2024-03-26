@@ -4,3 +4,4 @@ credentials.json
 build
 .env
 .DS_Store
+prod-env.yaml
